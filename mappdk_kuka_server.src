@@ -1,0 +1,64 @@
+&ACCESS RVP
+&REL 1
+
+; Author: Fan Mo
+; Email: mf3696576@gmail.com
+; Copyright: Fan Mo
+; Description: Manufacturing Apps
+; Development Kit (MAPPDK)
+; Driver for KUKA robots.
+; External function declarations assuming these are defined in other files
+EXT INT OPEN_COMM(VAR FILE, INT, INT)
+EXT INT CLOSE_COMM(VAR FILE, INT)
+EXT BOOL HANDLE_CMD(CHAR[254], CHAR[254])
+EXT DEF MAPPDK_SERVER()
+
+DECL FILE comm_file
+DECL INT status
+DECL CHAR cmd[254]
+DECL CHAR resp[254]
+DECL BOOL keep_conn
+DECL INT SERVER_TAG_NUM = 8  ; Typically used for identifying server configurations if needed
+DECL INT PORT_NUMBER = 18735
+
+; Start of main program
+BAS(#INITMOV,0)
+WRITE("MAPPDK SERVER started.\n")
+
+; Main communication loop
+LOOP
+    ; Attempt to open a communication channel on the specified port
+    status = OPEN_COMM(comm_file, SERVER_TAG_NUM, PORT_NUMBER)
+    IF status <> 0 THEN
+        WRITE("Failed to open communication channel.\n")
+        EXIT
+    ENDIF
+
+    ; Keep communication open until instructed to close
+    keep_conn = TRUE
+    WHILE keep_conn DO
+        READ comm_file[] (cmd)
+        IF cmd == "" THEN
+            keep_conn = FALSE
+        ELSE
+            ; Process the command and determine if connection should remain open
+            keep_conn = HANDLE_CMD(cmd, resp)
+            ; Send a response back through the communication channel
+            WRITE comm_file[] (resp)
+            IF NOT keep_conn THEN
+                ; Optional: Handle additional cleanup if needed
+                WRITE comm_file[] ("Closing connection.\n")
+                READ comm_file[] (cmd:0) ; Reading with timeout to ensure closure
+            ENDIF
+        ENDIF
+    ENDWHILE
+    
+    ; Close the communication channel properly
+    status = CLOSE_COMM(comm_file, SERVER_TAG_NUM)
+    IF status <> 0 THEN
+        WRITE("Failed to close communication channel.\n")
+    ENDIF
+ENDLOOP
+
+WRITE("MAPPDK SERVER finished.\n")
+END MAPPDK_SERVER
