@@ -1,6 +1,3 @@
-Below is an updated version of the README with enhanced formatting and added sections (such as badges and a table of contents) to improve its visibility on GitHub:
-
-```markdown
 # kukapy
 
 A Python package for controlling KUKA robots by interfacing with the KUKA Controller.
@@ -44,27 +41,23 @@ A Python package for controlling KUKA robots by interfacing with the KUKA Contro
    ```bash
    git clone https://github.com/your-username/kukapy.git
    cd kukapy
-   ```
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Deploying to KUKA Controller
-
-1. **Transfer the `.src` files:**  
-   Copy the files from the `kukadriver` directory onto the KUKA controller.
-2. **Configure network communication:**  
-   - Set the appropriate IP addresses.
-   - Verify connectivity between the controller and your computer.
-3. **Start the KUKA programs:**  
-   Run the necessary scripts (e.g., `mappdk_kuka_server.src`) on the robot to enable command execution.
-
-## Usage
-
+Install dependencies:
+bash
+Copy
+pip install -r requirements.txt
+Deploying to KUKA Controller
+Transfer the .src files:
+Copy the files from the kukadriver directory onto the KUKA controller.
+Configure network communication:
+Set the appropriate IP addresses.
+Verify connectivity between the controller and your computer.
+Start the KUKA programs:
+Run the necessary scripts (e.g., mappdk_kuka_server.src) on the robot to enable command execution.
+Usage
 Below is a quick example to get started:
 
-```python
+python
+Copy
 from kukapy.robot import Robot
 
 # Initialize the robot connection
@@ -79,19 +72,11 @@ print("Current Position:", pos)
 
 # Disconnect from the robot
 robot.disconnect()
-```
-
-## Contributing
-
+Contributing
 Contributions are welcome! If you have suggestions, improvements, or bug fixes, please open an issue or submit a pull request. For larger changes, consider discussing your ideas first by opening an issue.
 
-## License
+License
+This project is licensed under the MIT License.
 
-This project is licensed under the [MIT License](LICENSE).
-
-## Contact
-
+Contact
 For any inquiries, please open an issue on this repository or contact the maintainers directly.
-```
-
-This revised README is structured for clarity and ease of navigation on GitHub. Simply update the repository URL and any other specifics (like contact information) as needed.
